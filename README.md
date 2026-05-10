@@ -50,17 +50,17 @@ This project demonstrates end-to-end machine learning application development, f
 
 ## 🛠️ Tech Stack
 
-| Component | Technology |
-|-----------|-----------|
-| **Language** | Python 3.8+ |
-| **Data Processing** | Pandas, NumPy |
-| **ML Framework** | scikit-learn |
-| **Vectorization** | CountVectorizer (TF approach) |
-| **Similarity Metric** | Cosine Similarity |
-| **Web Framework** | Streamlit |
-| **API Integration** | Requests (TMDB API) |
-| **Model Storage** | Pickle |
-| **Dataset** | TMDB 5000 Movies & Credits |
+| Component                   | Technology                    |
+| --------------------------- | ----------------------------- |
+| **Language**          | Python 3.8+                   |
+| **Data Processing**   | Pandas, NumPy                 |
+| **ML Framework**      | scikit-learn                  |
+| **Vectorization**     | CountVectorizer (TF approach) |
+| **Similarity Metric** | Cosine Similarity             |
+| **Web Framework**     | Streamlit                     |
+| **API Integration**   | Requests (TMDB API)           |
+| **Model Storage**     | Pickle                        |
+| **Dataset**           | TMDB 5000 Movies & Credits    |
 
 ---
 
@@ -135,6 +135,7 @@ source venv/bin/activate
 ```
 
 Verify activation:
+
 ```bash
 which python  # Should show path to venv/bin/python
 ```
@@ -156,6 +157,7 @@ pip install pandas numpy scikit-learn streamlit requests
 ```
 
 **Key Dependencies:**
+
 - `pandas >= 1.3.0` - Data manipulation and analysis
 - `numpy >= 1.21.0` - Numerical computing
 - `scikit-learn >= 1.0.0` - Machine learning toolkit
@@ -175,6 +177,7 @@ streamlit run streamlit-app.py
 ```
 
 The application will:
+
 - Open in your default browser at `http://localhost:8501`
 - Load pre-trained models from `model/` directory
 - Display a dropdown menu with 5000+ movie titles
@@ -189,6 +192,7 @@ jupyter notebook main.ipynb
 ```
 
 Run all cells in sequence to:
+
 - Load TMDB 5000 movies and credits datasets
 - Preprocess and feature-engineer the data
 - Generate cosine similarity matrix
@@ -201,15 +205,19 @@ Run all cells in sequence to:
 ## 🧠 ML Workflow Explanation
 
 ### 1. **Data Loading & Exploration**
+
 - Load `tmdb_5000_movies.csv` and `tmdb_5000_credits.csv`
 - Merge on movie title
 - Inspect dataset dimensions and structure
 
 ### 2. **Feature Selection**
+
 Selected columns: `movie_id`, `title`, `overview`, `genres`, `keywords`, `cast`, `crew`
 
 ### 3. **Feature Extraction**
+
 Extract structured information from JSON-formatted columns:
+
 - **Genres**: Movie categories (Action, Drama, Comedy, etc.)
 - **Keywords**: Plot keywords and themes
 - **Cast**: Top 3 actors (actors field contains JSON objects)
@@ -217,12 +225,15 @@ Extract structured information from JSON-formatted columns:
 - **Overview**: Movie plot summary
 
 ### 4. **Text Preprocessing**
+
 - Remove spaces from names (e.g., "Johnny Depp" → "JohnnyDepp")
 - Tokenize overview text into words
 - Handle missing values with dropna()
 
 ### 5. **Feature Combination**
+
 Combine all extracted features into a single "tags" string:
+
 ```
 tags = overview + genres + keywords + cast + crew
 ```
@@ -230,20 +241,26 @@ tags = overview + genres + keywords + cast + crew
 This rich combined feature set captures movie essence from multiple angles.
 
 ### 6. **Vectorization**
+
 Use **CountVectorizer** from scikit-learn:
+
 - Max features: 5000 (controls vocabulary size)
 - Remove English stop words
 - Creates a sparse TF (Term Frequency) matrix
 - Shape: (5000 movies, 5000 features)
 
 ### 7. **Similarity Computation**
+
 Calculate **cosine similarity** between all movies:
+
 - Dense 5000×5000 similarity matrix
 - Value range: [0, 1] where 1 = identical, 0 = completely different
 - Computation: similarity(movie_i, movie_j) = cos(θ) between feature vectors
 
 ### 8. **Model Serialization**
+
 Save trained models using pickle:
+
 ```python
 pickle.dump(movies_df, open('model/movie_list.pkl', 'wb'))
 pickle.dump(similarity_matrix, open('model/similarity.pkl', 'wb'))
@@ -288,11 +305,12 @@ Top 5 recommendations:
 
 ### TMDB 5000 Movies Dataset
 
-**Source**: Kaggle - TMDB 5000 Movie Dataset  
-**Movies Included**: 5000 movies  
+**Source**: Kaggle - TMDB 5000 Movie Dataset
+**Movies Included**: 5000 movies
 **Date Range**: Multiple decades of cinema
 
 **Available Columns** (pre-processed):
+
 - `movie_id` - TMDB unique identifier
 - `title` - Movie title
 - `overview` - Plot summary
@@ -302,12 +320,14 @@ Top 5 recommendations:
 - `crew` - Director information (JSON array, director extracted)
 
 **After Processing**:
+
 - Total features used: 5000 (from CountVectorizer)
 - Feature type: Term frequency (TF)
 - Sparsity: High (typical for text data)
 - Vectorization method: Bag-of-words approach
 
 **Dataset Statistics**:
+
 - Clean movies after dropna(): ~4800-4900 valid entries
 - Average overview length: 150-200 words
 - Movies per genre: 100-800 (varied distribution)
@@ -317,6 +337,7 @@ Top 5 recommendations:
 ## 🚀 Future Improvements
 
 ### Short-term Enhancements
+
 - [ ] **Collaborative Filtering**: Add user-based recommendations using user ratings
 - [ ] **Hybrid Model**: Combine content-based and collaborative filtering
 - [ ] **Ratings Integration**: Use TMDB ratings as ranking signals
@@ -324,6 +345,7 @@ Top 5 recommendations:
 - [ ] **Caching**: Add Redis for faster API calls
 
 ### Medium-term Features
+
 - [ ] **User Profiles**: Track user preferences and viewing history
 - [ ] **Advanced Filters**: Filter recommendations by year, rating, language
 - [ ] **Personalization**: Learn from user feedback to improve suggestions
@@ -331,6 +353,7 @@ Top 5 recommendations:
 - [ ] **API Endpoint**: Create FastAPI/Flask REST API for mobile apps
 
 ### Long-term Scaling
+
 - [ ] **Deep Learning**: Implement neural collaborative filtering
 - [ ] **Real-time Updates**: Stream new movies and update recommendations
 - [ ] **A/B Testing**: Test different algorithms and models
@@ -338,20 +361,7 @@ Top 5 recommendations:
 - [ ] **Recommendation Diversity**: Balance accuracy with recommendation variety
 - [ ] **Cold-start Solution**: Implement content-based fallback for new users
 
----
-
-## 📸 Screenshots
-
-### 1. Application Home Screen
-![Movie Recommender Home](https://via.placeholder.com/600x400?text=Streamlit+Movie+Selection)
-
-### 2. Movie Selection Dropdown
-![Movie Dropdown](https://via.placeholder.com/600x400?text=Movie+Dropdown+List)
-
-### 3. Recommendations Display
-![Recommendations](https://via.placeholder.com/600x400?text=Top+5+Movie+Recommendations)
-
-*Note: Replace placeholder images with actual screenshots of your application*
+*n*
 
 ---
 
@@ -365,10 +375,10 @@ You are free to use, modify, and distribute this project for personal and commer
 
 ## 👤 Author
 
-**Your Name**  
-- Portfolio: [your-website.com](https://your-website.com)
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [LinkedIn Profile](https://linkedin.com/in/yourprofile)
+**Your Name**
+
+
+- GitHub: [atharvay774](https://github.com/atharvay774)
 
 ### Acknowledgments
 
@@ -382,6 +392,7 @@ You are free to use, modify, and distribute this project for personal and commer
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to:
+
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
@@ -392,19 +403,19 @@ Contributions are welcome! Please feel free to:
 
 ## ❓ FAQ
 
-**Q: How is the recommendation calculated?**  
+**Q: How is the recommendation calculated?**
 A: The system calculates cosine similarity between the selected movie's feature vector and all other movies' vectors. The 5 movies with the highest similarity scores are recommended.
 
-**Q: Can I add new movies to the system?**  
+**Q: Can I add new movies to the system?**
 A: Yes, you can retrain the model with an updated dataset using the `main.ipynb` notebook. You'll need the raw TMDB data files.
 
-**Q: Why use content-based filtering instead of collaborative filtering?**  
+**Q: Why use content-based filtering instead of collaborative filtering?**
 A: Content-based filtering works for new movies and avoids cold-start problems. It requires only movie metadata, not user ratings.
 
-**Q: What does the TMDB API key do?**  
+**Q: What does the TMDB API key do?**
 A: The API key fetches movie posters in real-time. Without it, the application will fail when trying to display recommendations.
 
-**Q: How accurate are the recommendations?**  
+**Q: How accurate are the recommendations?**
 A: Accuracy depends on the quality of input features and the appropriateness of cosine similarity for your use case. Consider user feedback to evaluate and improve the model.
 
 ---
